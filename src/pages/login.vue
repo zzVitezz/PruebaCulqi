@@ -11,9 +11,9 @@
         </div>
         <div class="bg-culqi-green w-full h-4 max-h-4"></div>
         <!--Separador-->
-        <div class="flex flex-col p-7 gap-4 bg-culqi-blue h-full">
+        <div class="flex flex-col p-7 justify-between bg-culqi-blue h-full">
           <img src="../assets/iconCulqi.svg" alt="logoCulqi" class="w-20" />
-          <div class="text-3xl text-culqi-white font-semibold">
+          <div class="text-5xl text-culqi-white font-semibold">
             Dale más power ⚡ a tus empleados hoy 💪
           </div>
           <div class="text-xs text-culqi-white">
