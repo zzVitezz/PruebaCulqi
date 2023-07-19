@@ -8,21 +8,23 @@
     }}</label>
     <div
       class="text-field__input-wrapper"
-      :class="[{ 'text-field__input-wrapper--focused': isFocused }]"
+      
+      :class="[
+        { 'text-field__input-wrapper--focused': isFocused },
+      ]"
     >
       <input
         ref="input"
-        v-model="inputValue"
         :type="inputType"
         :name="name"
         :placeholder="placeholder"
         :aria-label="label || placeholder"
-        :disabled="disabled"
         :readonly="readonly"
         :required="required"
         class="text-field__input"
         v-on="{
           focus,
+          blur
         }"
       />
     </div>
@@ -31,16 +33,12 @@
 <script setup lang="ts">
 import { PropType, computed, ref } from "vue";
 
-type TextFieldSize = "sm" | "md" | "lg";
-
 const emit = defineEmits([
   'focus',
-  'blur',
-  'update:model-value',
-  'click',
-  'change',
-  'update'
+  'blur'
 ])
+
+type TextFieldSize = "sm" | "md" | "lg";
 
 const props = defineProps({
   modelValue: {
@@ -83,28 +81,22 @@ const props = defineProps({
   },
 });
 
-const isFocused = ref(false)
+const isFocused = ref(false);
 const hasPasswordVisible = ref(false)
 const input = ref<HTMLElement | undefined>()
 
-const focus = (event: Event) => {
-  emit('focus', event)
-  isFocused.value = true
-}
 
 const inputType = computed(() =>
   hasPasswordVisible.value ? 'text' : props.type
 )
-
-const inputValue = computed({
-  get: () => props.modelValue,
-  set: (value: unknown) => emitValue(value)
-})
-
-const emitValue = (value: unknown) => {
-  emit('update:model-value', value)
+const focus = (event: Event) => {
+  emit('focus', event)
+  isFocused.value = true
 }
-
+const blur = (event: Event) => {
+  emit('blur', event)
+  isFocused.value = false
+}
 const computedLabel = computed(() => {
   const { required, label } = props
   if (!label) return undefined
@@ -120,17 +112,14 @@ const computedLabel = computed(() => {
   font-size: 14px;
 }
 .text-field__input-wrapper {
-  @apply border rounded-lg border-culqi-green flex items-center;
+  @apply border rounded-lg flex items-center;
   padding: 0 12px;
 }
-
-.text-field__input-wrapper--focused {
-  @apply border border-culqi-green;
-  padding: 0 11px;
+.text-field__input-wrapper--focused{
+  @apply border rounded-lg border-culqi-green flex;
+  
 }
-
 .text-field__input {
   @apply w-full h-full text-culqi-blue font-normal px-2 py-4 focus:outline-none;
 }
-
 </style>
