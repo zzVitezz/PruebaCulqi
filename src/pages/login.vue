@@ -21,21 +21,35 @@
           </div>
         </div>
       </section>
-      <section class="flex flex-col items-center justify-center w-full px-8 lg:px-32">
-        <div class="text-xl text-culqi-blue font-semibold mb-8">
-          Inicia sesión
-        </div>
-        <div class="mb-8 w-full">
-            <OvTextField label="Correo electrónico" placeholder="Ingresa el correo electrónico" class="mb-6"></OvTextField>
-            <OvTextField label="Contraseña" placeholder="Ingresa la contraseña"></OvTextField>
-        </div>
-        <OvButton text="Iniciar sesión" class="w-full mb-8" />
+      <section
+        class="flex flex-col items-center justify-between py-8 w-full px-8 lg:px-32"
+      >
         <div>
-            <span>¿Eres nuevo aquí?</span><span class="text-culqi-green"> Crea una cuenta</span>
+          <img src="../assets/logoCulqi.svg" alt="logoCulqi" class="w-20 lg:hidden" />
+        </div>
+        <div class="flex flex-col items-center w-full">
+          <div class="text-xl text-culqi-blue font-semibold mb-8">
+            Inicia sesión
+          </div>
+          <div class="mb-8 w-full">
+            <OvTextField
+              label="Correo electrónico"
+              placeholder="Ingresa el correo electrónico"
+              class="mb-6"
+            ></OvTextField>
+            <OvTextField
+              label="Contraseña"
+              placeholder="Ingresa la contraseña"
+            ></OvTextField>
+          </div>
+          <OvButton text="Iniciar sesión" class="w-full mb-8" />
+          <div>
+            <span>¿Eres nuevo aquí?</span
+            ><span class="text-culqi-green"> Crea una cuenta</span>
+          </div>
         </div>
         <div>2023 Culqi. Todos los derechos reservados</div>
       </section>
-
     </OvWrapper>
   </OvPage>
 </template>
