@@ -54,7 +54,7 @@ const component = computed(() => {
 </script>
 <style scoped>
 .ov-btn {
-  @apply rounded-md ;
+  @apply rounded-md flex justify-center;
 }
 .ov-btn--sm{
   @apply px-2 py-1 text-sm;
@@ -77,8 +77,8 @@ const component = computed(() => {
 .ov-btn--outline:disabled{
   @apply bg-slate-300 text-slate-500 shadow-none outline-slate-400 
 }
-.ov-btn--text{
-  @apply p-0 text-culqi-blue shadow-none;
+.ov-btn--text{ 
+  @apply p-0 text-culqi-green shadow-none text-sm inline-block;
 }
 
 

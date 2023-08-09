@@ -1,30 +1,23 @@
 <template>
-  <div
-    class="text-field"
-    :class="[`text-field--${size}`, $attrs.class]"
-  >
-    <label v-if="label" class="text-field__label">{{
-      computedLabel
-    }}</label>
+  <div class="text-field">
+    <label v-if="label" class="text-field__label"
+      >{{ label }}
+      <span v-if="required" class="text-red-500">*</span>
+    </label>
     <div
       class="text-field__input-wrapper"
-      
-      :class="[
-        { 'text-field__input-wrapper--focused': isFocused },
-      ]"
+      :class="[{ 'text-field__input-wrapper--focused': isFocused }]"
     >
       <input
-        ref="input"
         :type="inputType"
-        :name="name"
         :placeholder="placeholder"
-        :aria-label="label || placeholder"
-        :readonly="readonly"
         :required="required"
         class="text-field__input"
+        :value="inputValue"
+        @input="updateInputValue($event)"
         v-on="{
           focus,
-          blur
+          blur,
         }"
       />
     </div>
@@ -32,13 +25,7 @@
 </template>
 <script setup lang="ts">
 import { PropType, computed, ref } from "vue";
-
-const emit = defineEmits([
-  'focus',
-  'blur'
-])
-
-type TextFieldSize = "sm" | "md" | "lg";
+const emit = defineEmits(["focus", "blur","update:modelValue"]);
 
 const props = defineProps({
   modelValue: {
@@ -49,7 +36,6 @@ const props = defineProps({
   },
   placeholder: { type: String, default: undefined },
   label: { type: String, default: undefined },
-  name: { type: String, default: "input" },
   type: {
     type: String,
     default: "text",
@@ -70,38 +56,35 @@ const props = defineProps({
     },
   },
   required: { type: Boolean, default: false },
-  disabled: { type: Boolean, default: false },
-  readonly: { type: Boolean, default: false },
-  size: {
-    type: String as PropType<TextFieldSize>,
-    default: "md",
-    validator: (value: string) => {
-      return ["sm", "md", "lg"].includes(value);
-    },
-  },
 });
 
-const isFocused = ref(false);
-const hasPasswordVisible = ref(false)
-const input = ref<HTMLElement | undefined>()
-
+const isFocused = ref(false); // Añade la clase dinámica "text-field__input-wrapper--focused"
+const hasPasswordVisible = ref(false);
+const inputValue = ref(props.modelValue); // Pasa v-model al componente padre
 
 const inputType = computed(() =>
-  hasPasswordVisible.value ? 'text' : props.type
-)
+  hasPasswordVisible.value ? "text" : props.type
+);
+
+// Actualiza el valor de isFocused cuando se hace click en el input
 const focus = (event: Event) => {
-  emit('focus', event)
-  isFocused.value = true
-}
+  emit("focus", event);
+  isFocused.value = true;
+};
+
 const blur = (event: Event) => {
-  emit('blur', event)
-  isFocused.value = false
-}
-const computedLabel = computed(() => {
-  const { required, label } = props
-  if (!label) return undefined
-  return required ? `${label} *` : label
-})
+  emit("blur", event);
+  isFocused.value = false;
+};
+
+// Permite actualizar el valor del input
+const updateInputValue = (event: Event) => {
+  const value = (event.target as HTMLInputElement).value;
+  inputValue.value = value;
+  emit("update:modelValue", value);
+};
+
+
 </script>
 <style scoped>
 .text-field {
@@ -115,9 +98,8 @@ const computedLabel = computed(() => {
   @apply border rounded-lg flex items-center;
   padding: 0 12px;
 }
-.text-field__input-wrapper--focused{
+.text-field__input-wrapper--focused {
   @apply border rounded-lg border-culqi-green flex;
-  
 }
 .text-field__input {
   @apply w-full h-full text-culqi-blue font-normal px-2 py-4 focus:outline-none;
